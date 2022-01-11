@@ -1,0 +1,22 @@
+name: CI
+
+on: push
+
+jobs:
+  install_swig:
+    name: Install swig
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Remove installed swig version
+        run: sudo apt-get remove swig
+      - name: Install SWIG
+        run: |
+          wget http://prdownloads.sourceforge.net/swig/swig-4.0.2.tar.gz
+          tar -xzvf swig-4.0.2.tar.gz
+          cd swig-4.0.2
+          ./configure --prefix=/home/Jerry/library/swigtool
+          sudo make
+          sudo make install
+          echo "$(pwd)" >> $GITHUB_PATH
+      - name: Validate SWIG
+        run: echo "$PATH" && swig -version
